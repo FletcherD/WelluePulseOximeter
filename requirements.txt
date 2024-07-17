@@ -1,0 +1,2 @@
+gatt==0.2.7
+matplotlib==3.6.3
