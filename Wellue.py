@@ -43,7 +43,7 @@ def parse_message(byte_data):
         if byte_data[i:i+3] == b'\xfe\x08\x56':
             if i + 8 <= len(byte_data):
                 header, oximeter_value, status_bits, pulse_indicator, counter, checksum = struct.unpack('<3sBBBBB', byte_data[i:i+8])
-                data = {'oximeter': oximeter_value, 'status': status_bits, 'pulse': pulse_indicator}
+                data = {'type': 'fast', 'counter': counter, 'oximeter': oximeter_value, 'status': status_bits, 'pulse': pulse_indicator}
                 values.append(data)
                 i += 8
             else:
@@ -52,7 +52,7 @@ def parse_message(byte_data):
         elif byte_data[i:i+3] == b'\xfe\x0a\x55':
             if i + 10 <= len(byte_data):
                 header, _, bpm, sp_o2, pi, counter, checksum = struct.unpack('>3sBBBHBB', byte_data[i:i+10])
-                data = {'bpm': bpm, 'sp_o2': sp_o2, 'pi': pi/1000}
+                data = {'type': 'slow', 'counter': counter, 'bpm': bpm, 'sp_o2': sp_o2, 'pi': pi/1000}
                 values.append(data)
                 i += 10
             else:
